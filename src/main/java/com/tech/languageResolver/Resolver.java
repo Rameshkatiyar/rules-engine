@@ -1,4 +1,4 @@
-package com.tech.api;
+package com.tech.languageResolver;
 
 public interface Resolver<I> {
     String EMPTY = "";

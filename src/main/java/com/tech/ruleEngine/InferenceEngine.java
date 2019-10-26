@@ -1,9 +1,9 @@
-package com.tech.api;
+package com.tech.ruleEngine;
 
-import com.tech.enums.RuleNamespace;
-import com.tech.models.Rule;
-import com.tech.service.DSLResolver;
-import com.tech.service.SpelParser;
+import com.tech.rulesImpl.common.enums.RuleNamespace;
+import com.tech.knowledgeBase.models.Rule;
+import com.tech.languageResolver.DSLResolver;
+import com.tech.languageResolver.SpelParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,8 @@ public abstract class InferenceEngine<INPUT_DATA, OUTPUT_RESULT> {
     protected DSLResolver dslResolver;
     @Autowired
     protected SpelParser spelParser;
+    @Autowired
+    private RuleParser<INPUT_DATA, OUTPUT_RESULT> ruleParser;
 
     /**
      * Run inference engine on set of rules for given data.
@@ -48,13 +50,13 @@ public abstract class InferenceEngine<INPUT_DATA, OUTPUT_RESULT> {
     }
 
     /**
-     * Here we are using Linear matching algorithm for pattern matching.
-     *
-     * We can use here any pattern matching algo:
+     *We can use here any pattern matching algo:
      * 1. Rete
      * 2. Linear
      * 3. Treat
      * 4. Leaps
+     *
+     * Here we are using Linear matching algorithm for pattern matching.
      * @param listOfRules
      * @param inputData
      * @return
@@ -62,12 +64,10 @@ public abstract class InferenceEngine<INPUT_DATA, OUTPUT_RESULT> {
     protected List<Rule> match(List<Rule> listOfRules, INPUT_DATA inputData){
         return listOfRules.stream()
                 .filter(
-                        rule -> {
-                            String spelExpression = dslResolver.resolveDSLToSpelExpression(
-                                    rule.getCondition(), inputData);
-                            return spelParser.parseConditionExpression(
-                                    spelExpression, inputData);
-                        }
+                        rule -> ruleParser.matchConditionOnInputData(
+                                rule.getCondition(),
+                                inputData
+                        )
                 )
                 .collect(Collectors.toList());
     }

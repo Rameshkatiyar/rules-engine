@@ -1,4 +1,4 @@
-package com.tech.config;
+package com.tech.languageResolver;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

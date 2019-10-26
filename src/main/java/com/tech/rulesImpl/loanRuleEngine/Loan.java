@@ -1,4 +1,4 @@
-package com.tech.rulesImpl.loan;
+package com.tech.rulesImpl.loanRuleEngine;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

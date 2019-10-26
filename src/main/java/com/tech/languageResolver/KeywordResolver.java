@@ -1,6 +1,5 @@
-package com.tech.service;
+package com.tech.languageResolver;
 
-import com.tech.api.Resolver;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

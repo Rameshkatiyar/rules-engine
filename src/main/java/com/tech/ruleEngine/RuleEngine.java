@@ -1,7 +1,7 @@
-package com.tech.api;
+package com.tech.ruleEngine;
 
-import com.tech.db.KnowledgeBaseService;
-import com.tech.models.Rule;
+import com.tech.knowledgeBase.KnowledgeBaseService;
+import com.tech.knowledgeBase.models.Rule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

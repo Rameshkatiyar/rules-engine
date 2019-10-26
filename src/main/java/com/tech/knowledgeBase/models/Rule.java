@@ -1,6 +1,6 @@
-package com.tech.models;
+package com.tech.knowledgeBase.models;
 
-import com.tech.enums.RuleNamespace;
+import com.tech.rulesImpl.common.enums.RuleNamespace;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

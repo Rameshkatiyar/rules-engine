@@ -1,7 +1,7 @@
-package com.tech.rulesImpl.loan.resolver;
+package com.tech.rulesImpl.loanRuleEngine.resolver;
 
-import com.tech.api.Resolver;
-import com.tech.rulesImpl.loan.Loan;
+import com.tech.languageResolver.Resolver;
+import com.tech.rulesImpl.loanRuleEngine.Loan;
 import org.springframework.stereotype.Service;
 
 @Service
