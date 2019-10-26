@@ -9,7 +9,6 @@ public class ScoreResolver implements Resolver<Loan> {
     private static final String RESOLVER_KEYWORD = "score";
     private static final String CREDIT_SCORE = "credit_score";
 
-
     @Override
     public String getResolverKeyword() {
         return RESOLVER_KEYWORD;

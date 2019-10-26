@@ -1,8 +1,6 @@
-package com.tech.service;
+package com.tech.db;
 
 import com.google.common.base.Enums;
-import com.tech.db.RuleDbModel;
-import com.tech.db.RulesRepository;
 import com.tech.enums.RuleNamespace;
 import com.tech.models.Rule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class DataService {
+public class KnowledgeBaseService {
     @Autowired
     private RulesRepository rulesRepository;
 

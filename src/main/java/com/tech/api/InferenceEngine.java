@@ -1,5 +1,6 @@
 package com.tech.api;
 
+import com.tech.enums.RuleNamespace;
 import com.tech.models.Rule;
 import com.tech.service.DSLResolver;
 import com.tech.service.SpelParser;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public abstract class InferenceEngine<I, O> {
+public abstract class InferenceEngine<INPUT_DATA, OUTPUT_RESULT> {
 
     @Autowired
     protected DSLResolver dslResolver;
@@ -26,22 +27,30 @@ public abstract class InferenceEngine<I, O> {
      * @param inputData
      * @return
      */
-    public O run (List<Rule> listOfRules, I inputData){
+    public OUTPUT_RESULT run (List<Rule> listOfRules, INPUT_DATA inputData){
         if (null == listOfRules || listOfRules.isEmpty()){
             return null;
         }
+
+        //STEP 1 (MATCH) : Match the facts and data against the set of rules.
         List<Rule> conflictSet = match(listOfRules, inputData);
 
-        Rule resolveRule = resolve(conflictSet);
-        if (null == resolveRule){
+        //STEP 2 (RESOLVE) : Resolve the conflict and give the selected one rule.
+        Rule resolvedRule = resolve(conflictSet);
+        if (null == resolvedRule){
             return null;
         }
 
-        return executeRule(resolveRule, inputData);
+        //STEP 3 (EXECUTE) : Run the action of the selected rule on given data and return the output.
+        OUTPUT_RESULT output_result = executeRule(resolvedRule, inputData);
+
+        return output_result;
     }
 
     /**
-     * Using Leaner matching algo. We can use here any pattern matching algo.
+     * Here we are using Linear matching algorithm for pattern matching.
+     *
+     * We can use here any pattern matching algo:
      * 1. Rete
      * 2. Linear
      * 3. Treat
@@ -50,7 +59,7 @@ public abstract class InferenceEngine<I, O> {
      * @param inputData
      * @return
      */
-    protected List<Rule> match(List<Rule> listOfRules, I inputData){
+    protected List<Rule> match(List<Rule> listOfRules, INPUT_DATA inputData){
         return listOfRules.stream()
                 .filter(
                         rule -> {
@@ -64,12 +73,14 @@ public abstract class InferenceEngine<I, O> {
     }
 
     /**
-     * Using find first rule logic. We can use here any resolving techniques:
+     * We can use here any resolving techniques:
      * 1. Lex
      * 2. Recency
      * 3. MEA
      * 4. Refactor
      * 5. Priority wise
+     *
+     *  Here we are using find first rule logic.
      * @param conflictSet
      * @return
      */
@@ -88,5 +99,7 @@ public abstract class InferenceEngine<I, O> {
      * @param inputData
      * @return
      */
-    protected abstract O executeRule(Rule rule, I inputData);
+    protected abstract OUTPUT_RESULT executeRule(Rule rule, INPUT_DATA inputData);
+
+    protected abstract RuleNamespace getRuleNamespace();
 }

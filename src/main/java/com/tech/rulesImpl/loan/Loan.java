@@ -15,4 +15,5 @@ public class Loan {
     Double requestedLoanAmount;
     Boolean approved;
     Double approvedAmount;
+    Double salary;
 }

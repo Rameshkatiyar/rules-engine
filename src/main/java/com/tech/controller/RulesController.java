@@ -3,7 +3,7 @@ package com.tech.controller;
 import com.google.common.base.Enums;
 import com.tech.enums.RuleNamespace;
 import com.tech.models.Rule;
-import com.tech.service.DataService;
+import com.tech.db.KnowledgeBaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +17,18 @@ import java.util.List;
 @RestController
 public class RulesController {
     @Autowired
-    private DataService dataService;
+    private KnowledgeBaseService knowledgeBaseService;
 
     @GetMapping(value = "/get-all-rules/{ruleNamespace}")
     public ResponseEntity<?> getAllRulesByNamespace(@PathVariable("ruleNamespace") String ruleNamespace) {
         RuleNamespace namespace = Enums.getIfPresent(RuleNamespace.class, ruleNamespace.toUpperCase()).or(RuleNamespace.DEFAULT);
-        List<Rule> allRules = dataService.getAllRuleByNamespace(namespace.toString());
+        List<Rule> allRules = knowledgeBaseService.getAllRuleByNamespace(namespace.toString());
         return ResponseEntity.ok(allRules);
     }
 
     @GetMapping(value = "/get-all-rules")
     public ResponseEntity<?> getAllRules() {
-        List<Rule> allRules = dataService.getAllRules();
+        List<Rule> allRules = knowledgeBaseService.getAllRules();
         return ResponseEntity.ok(allRules);
     }
 }
