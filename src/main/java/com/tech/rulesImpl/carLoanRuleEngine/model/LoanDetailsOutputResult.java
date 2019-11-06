@@ -16,4 +16,5 @@ public class LoanDetailsOutputResult {
     LocalDate approvalDate;
     Float interestRate;
     Double sanctionedAmount;
+    Double processingFees;
 }

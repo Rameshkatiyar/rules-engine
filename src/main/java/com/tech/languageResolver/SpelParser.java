@@ -17,13 +17,29 @@ public class SpelParser {
     private SpelExpressionParser spelExpressionParser;
 
     public boolean parseConditionExpression(String spelExpression, Object inputData) {
+        boolean result = (boolean) parseSpelExpression(spelExpression, inputData);
+        return result;
+    }
+
+    public Object parseSpelExpression(String spelExpression, Object data){
         try {
-            standardEvaluationContext.setRootObject(inputData);
+            standardEvaluationContext.setRootObject(data);
             Expression expression = spelExpressionParser.parseExpression(spelExpression);
-            return expression.getValue(standardEvaluationContext, Boolean.class);
+            return expression.getValue(standardEvaluationContext);
         }catch (Exception e){
             log.error("Incorrect Spel expression: {} . Error: {}", spelExpression, e.getMessage());
-            return false;
+            return null;
         }
+    }
+
+    public Object getValue(Object dataModel, String variableName){
+        standardEvaluationContext.setRootObject(dataModel);
+        Object value = spelExpressionParser.parseExpression(variableName).getValue(standardEvaluationContext);
+        return value;
+    }
+
+    public void setValue(Object dataModel, String variableName, Object value){
+        standardEvaluationContext.setRootObject(dataModel);
+        spelExpressionParser.parseExpression(variableName).setValue(standardEvaluationContext, value);
     }
 }

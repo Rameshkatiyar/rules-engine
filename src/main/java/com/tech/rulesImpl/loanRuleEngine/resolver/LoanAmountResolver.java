@@ -5,7 +5,7 @@ import com.tech.rulesImpl.loanRuleEngine.Loan;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoanAmountResolver implements Resolver<Loan> {
+public class LoanAmountResolver implements Resolver<Loan, Loan> {
     private static final String RESOLVER_KEYWORD = "loan";
     private static final String REQUESTED_AMOUNT = "requested_amount";
 
@@ -21,7 +21,7 @@ public class LoanAmountResolver implements Resolver<Loan> {
     }
 
     @Override
-    public Object resolveValue(String keyword, Loan loan, Object setValue) {
+    public Object resolveValue(String keyword, Loan loan, Loan setValue) {
         if (keyword.equalsIgnoreCase(SALARY)){
             return loan.getSalary();
         }

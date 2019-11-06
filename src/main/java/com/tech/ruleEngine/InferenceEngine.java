@@ -1,9 +1,9 @@
 package com.tech.ruleEngine;
 
+import com.tech.languageResolver.RuleParser;
 import com.tech.rulesImpl.common.enums.RuleNamespace;
 import com.tech.knowledgeBase.models.Rule;
 import com.tech.languageResolver.DSLResolver;
-import com.tech.languageResolver.SpelParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,7 @@ public abstract class InferenceEngine<INPUT_DATA, OUTPUT_RESULT> {
 
     @Autowired
     protected DSLResolver dslResolver;
-    @Autowired
-    protected SpelParser spelParser;
+
     @Autowired
     private RuleParser<INPUT_DATA, OUTPUT_RESULT> ruleParser;
 
@@ -44,9 +43,9 @@ public abstract class InferenceEngine<INPUT_DATA, OUTPUT_RESULT> {
         }
 
         //STEP 3 (EXECUTE) : Run the action of the selected rule on given data and return the output.
-        OUTPUT_RESULT output_result = executeRule(resolvedRule, inputData);
+        OUTPUT_RESULT outputResult = executeRule(resolvedRule, inputData);
 
-        return output_result;
+        return outputResult;
     }
 
     /**
@@ -64,10 +63,10 @@ public abstract class InferenceEngine<INPUT_DATA, OUTPUT_RESULT> {
     protected List<Rule> match(List<Rule> listOfRules, INPUT_DATA inputData){
         return listOfRules.stream()
                 .filter(
-                        rule -> ruleParser.matchConditionOnInputData(
-                                rule.getCondition(),
-                                inputData
-                        )
+                        rule -> {
+                            String condition = rule.getCondition();
+                            return ruleParser.parseCondition(condition, inputData);
+                        }
                 )
                 .collect(Collectors.toList());
     }
@@ -99,7 +98,11 @@ public abstract class InferenceEngine<INPUT_DATA, OUTPUT_RESULT> {
      * @param inputData
      * @return
      */
-    protected abstract OUTPUT_RESULT executeRule(Rule rule, INPUT_DATA inputData);
+    protected OUTPUT_RESULT executeRule(Rule rule, INPUT_DATA inputData){
+        OUTPUT_RESULT outputResult = initializeOutputResult();
+        return ruleParser.parseAction(rule.getAction(), inputData, outputResult);
+    }
 
+    protected abstract OUTPUT_RESULT initializeOutputResult();
     protected abstract RuleNamespace getRuleNamespace();
 }
