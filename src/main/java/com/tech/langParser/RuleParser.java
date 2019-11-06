@@ -1,4 +1,4 @@
-package com.tech.languageResolver;
+package com.tech.langParser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class RuleParser<INPUT_DATA, OUTPUT_RESULT> {
 
     @Autowired
-    protected DSLResolver dslResolver;
+    protected OldDSLResolver oldDslResolver;
     @Autowired
     protected SpelParser spelParser;
 
@@ -24,8 +24,8 @@ public class RuleParser<INPUT_DATA, OUTPUT_RESULT> {
      * @param inputData
      */
     public boolean parseCondition(String expression, INPUT_DATA inputData) {
-        String resolvedDslExpression = dslResolver.resolveDomainSpecificKeywords(expression, inputData);
-        String resolvedGetExpression = dslResolver.resolveGetInputDataVariable(resolvedDslExpression, inputData);
+        String resolvedDslExpression = oldDslResolver.resolveDomainSpecificKeywords(expression, inputData);
+        String resolvedGetExpression = oldDslResolver.resolveGetInputDataVariable(resolvedDslExpression, inputData);
         Object value = spelParser.parseSpelExpression(resolvedGetExpression, inputData);
         if (null != value){
             return (boolean) value;
@@ -48,9 +48,9 @@ public class RuleParser<INPUT_DATA, OUTPUT_RESULT> {
      * @return
      */
     public OUTPUT_RESULT parseAction(String expression, INPUT_DATA inputData, OUTPUT_RESULT outputResult) {
-        String resolvedDslExpression = dslResolver.resolveDomainSpecificKeywords(expression, inputData);
-        String resolvedGetExpression = dslResolver.resolveGetInputDataVariable(resolvedDslExpression, inputData);
-        dslResolver.resolveSetOutputResultSpelExpression(resolvedGetExpression, inputData, outputResult);
+        String resolvedDslExpression = oldDslResolver.resolveDomainSpecificKeywords(expression, inputData);
+        String resolvedGetExpression = oldDslResolver.resolveGetInputDataVariable(resolvedDslExpression, inputData);
+        oldDslResolver.resolveSetOutputResultSpelExpression(resolvedGetExpression, inputData, outputResult);
         return outputResult;
     }
 

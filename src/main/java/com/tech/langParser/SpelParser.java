@@ -1,4 +1,4 @@
-package com.tech.languageResolver;
+package com.tech.langParser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +15,6 @@ public class SpelParser {
     private StandardEvaluationContext standardEvaluationContext;
     @Autowired
     private SpelExpressionParser spelExpressionParser;
-
-    public boolean parseConditionExpression(String spelExpression, Object inputData) {
-        boolean result = (boolean) parseSpelExpression(spelExpression, inputData);
-        return result;
-    }
 
     public Object parseSpelExpression(String spelExpression, Object data){
         try {

@@ -1,9 +1,8 @@
 package com.tech.ruleEngine;
 
-import com.tech.languageResolver.RuleParser;
-import com.tech.rulesImpl.common.enums.RuleNamespace;
 import com.tech.knowledgeBase.models.Rule;
-import com.tech.languageResolver.DSLResolver;
+import com.tech.langParser.RuleParser;
+import com.tech.restAPI.RuleNamespace;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +14,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public abstract class InferenceEngine<INPUT_DATA, OUTPUT_RESULT> {
-
-    @Autowired
-    protected DSLResolver dslResolver;
 
     @Autowired
     private RuleParser<INPUT_DATA, OUTPUT_RESULT> ruleParser;

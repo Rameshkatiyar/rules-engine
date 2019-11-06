@@ -1,19 +1,13 @@
 package com.tech.rulesImpl.carLoanRuleEngine;
 
+import com.tech.restAPI.RuleNamespace;
 import com.tech.ruleEngine.InferenceEngine;
-import com.tech.rulesImpl.carLoanRuleEngine.model.LoanDetailsOutputResult;
-import com.tech.rulesImpl.carLoanRuleEngine.model.UserInfoInputData;
-import com.tech.rulesImpl.common.enums.RuleNamespace;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class CarLoanInferenceEngine extends InferenceEngine<UserInfoInputData, LoanDetailsOutputResult> {
-//    @Override
-//    protected LoanDetailsOutputResult executeRule(Rule rule, UserInfoInputData userInfoInputData) {
-//        return null;
-//    }
 
     @Override
     protected RuleNamespace getRuleNamespace() {

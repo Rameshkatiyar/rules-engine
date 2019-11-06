@@ -1,4 +1,4 @@
-package com.tech.rulesImpl.carLoanRuleEngine.model;
+package com.tech.rulesImpl.carLoanRuleEngine;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

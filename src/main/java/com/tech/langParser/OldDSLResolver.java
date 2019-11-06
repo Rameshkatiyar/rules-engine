@@ -1,7 +1,9 @@
-package com.tech.languageResolver;
+package com.tech.langParser;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.tech.dslResolver.DSLKeywordResolver;
+import com.tech.dslResolver.DSLResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,9 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class DSLResolver {
+public class OldDSLResolver {
     @Autowired
-    private KeywordResolver keywordResolver;
+    private DSLKeywordResolver keywordResolver;
     @Autowired
     private SpelParser spelParser;
 
@@ -84,8 +86,8 @@ public class DSLResolver {
                             String keyResolver = getKeywordResolver(extractDslKeyword);
                             String keywordValue = getKeywordValue(extractDslKeyword);
                             String setValue = getSetValue(extractDslKeyword);
-                            Resolver resolver = keywordResolver.getResolver(keyResolver).get();
-                            Object resolveValue = resolver.resolveValue(keywordValue, inputData, setValue);
+                            DSLResolver resolver = keywordResolver.getResolver(keyResolver).get();
+                            Object resolveValue = resolver.resolveValue(keywordValue);
                             dslKeywordToResolverValueMap.put(dslKeyword, resolveValue);
                         }
                 );
@@ -162,12 +164,12 @@ public class DSLResolver {
     }
 
     public static void main(String args[]){
-        DSLResolver dslResolver = new DSLResolver();
+        OldDSLResolver oldDslResolver = new OldDSLResolver();
         String expression = "#( =$(input.abc)) then #(arg=3s4)";
 
-        List<String> listOfDslKeywords = dslResolver.getListOfGetDslKeywords(expression);
-        String extractKeyword = dslResolver.extractKeyword(listOfDslKeywords.get(0));
-        System.out.print(dslResolver.getKeywordValue(extractKeyword));
+        List<String> listOfDslKeywords = oldDslResolver.getListOfGetDslKeywords(expression);
+        String extractKeyword = oldDslResolver.extractKeyword(listOfDslKeywords.get(0));
+        System.out.print(oldDslResolver.getKeywordValue(extractKeyword));
     }
 
     private String extractKeyword(String keyword) {

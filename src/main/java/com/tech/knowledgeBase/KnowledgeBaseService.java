@@ -1,7 +1,7 @@
 package com.tech.knowledgeBase;
 
 import com.google.common.base.Enums;
-import com.tech.rulesImpl.common.enums.RuleNamespace;
+import com.tech.restAPI.RuleNamespace;
 import com.tech.knowledgeBase.db.RuleDbModel;
 import com.tech.knowledgeBase.db.RulesRepository;
 import com.tech.knowledgeBase.models.Rule;

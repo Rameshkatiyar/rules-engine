@@ -1,13 +1,12 @@
-package com.tech.rulesImpl.common.controller;
+package com.tech.restAPI;
 
 import com.google.common.base.Enums;
 import com.tech.ruleEngine.RuleEngine;
-import com.tech.rulesImpl.common.enums.RuleNamespace;
 import com.tech.knowledgeBase.models.Rule;
 import com.tech.knowledgeBase.KnowledgeBaseService;
 import com.tech.rulesImpl.carLoanRuleEngine.CarLoanInferenceEngine;
-import com.tech.rulesImpl.carLoanRuleEngine.model.LoanDetailsOutputResult;
-import com.tech.rulesImpl.carLoanRuleEngine.model.UserInfoInputData;
+import com.tech.rulesImpl.carLoanRuleEngine.LoanDetailsOutputResult;
+import com.tech.rulesImpl.carLoanRuleEngine.UserInfoInputData;
 import com.tech.rulesImpl.loanRuleEngine.Loan;
 import com.tech.rulesImpl.loanRuleEngine.LoanInferenceEngine;
 import lombok.extern.slf4j.Slf4j;
