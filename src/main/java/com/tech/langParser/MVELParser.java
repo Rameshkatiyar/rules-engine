@@ -18,28 +18,4 @@ public class MVELParser {
         }
         return false;
     }
-
-
-//    public static void main(String args[]){
-//        Map<String, Object> input = new HashMap<>();
-//        LoanDetailsOutputResult loan = new LoanDetailsOutputResult();
-//        UserInfoInputData user = new UserInfoInputData();
-//        user.setFirstName("Ramesh");
-//        user.setRequestedLoanAmount(20.0);
-//        user.setCreditScore(10);
-//
-//        input.put("loan", loan);
-//        input.put("user", user);
-//
-////        String expression = "user.setRequestedLoanAmount(30.0 * 5 + (user.creditScore))";
-//        String expression = "(30.0 * 5 + (user.creditScore)) > 40.0";
-//
-//
-//        MVELParser mvelParser = new MVELParser();
-//        boolean result = mvelParser.parseMvelExpression(expression, input);
-//
-//        System.out.println("Result: "+result);
-//
-//        System.out.println(user.getRequestedLoanAmount());
-//    }
 }
