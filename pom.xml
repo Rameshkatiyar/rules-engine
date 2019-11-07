@@ -24,6 +24,7 @@
         <junit.version>4.12</junit.version>
         <typesafe.version>1.2.1</typesafe.version>
         <postgresql.version>9.4-1206-jdbc42</postgresql.version>
+        <mvel.version>2.4.4.Final</mvel.version>
     </properties>
 
     <dependencies>
@@ -84,6 +85,13 @@
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
             <version>${typesafe.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mvel/mvel2 -->
+        <dependency>
+            <groupId>org.mvel</groupId>
+            <artifactId>mvel2</artifactId>
+            <version>${mvel.version}</version>
         </dependency>
 
     </dependencies>
