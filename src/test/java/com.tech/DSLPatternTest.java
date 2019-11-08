@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = Application.class) //This annotation is used to specify the application configuration to load before running the tests.
 public class DSLPatternTest {
 
     @Autowired
