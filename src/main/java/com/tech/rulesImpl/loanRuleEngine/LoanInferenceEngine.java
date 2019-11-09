@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class LoanInferenceEngine extends InferenceEngine<Loan, Loan> {
+public class LoanInferenceEngine extends InferenceEngine<UserDetails, LoanDetails> {
 
     @Override
     protected RuleNamespace getRuleNamespace() {
@@ -15,7 +15,7 @@ public class LoanInferenceEngine extends InferenceEngine<Loan, Loan> {
     }
 
     @Override
-    protected Loan initializeOutputResult() {
-        return Loan.builder().build();
+    protected LoanDetails initializeOutputResult() {
+        return LoanDetails.builder().build();
     }
 }

@@ -1,4 +1,4 @@
-package com.tech.rulesImpl.carLoanRuleEngine;
+package com.tech.rulesImpl.insuranceRuleEngine;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +11,12 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoInputData {
+public class PolicyHolderDetails {
     String firstName;
     String lastName;
     LocalDate dob;
-    Long accountNumber;
-    Double salary;
-    String bank;
-    Integer creditScore;
-    Double requestedLoanAmount;
+    String gender;
+    Double premiumAmount;
+    Integer policyTermInYear;
+    Integer premiumTermInYear;
 }

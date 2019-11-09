@@ -4,11 +4,12 @@ import com.google.common.base.Enums;
 import com.tech.ruleEngine.RuleEngine;
 import com.tech.knowledgeBase.models.Rule;
 import com.tech.knowledgeBase.KnowledgeBaseService;
-import com.tech.rulesImpl.carLoanRuleEngine.CarLoanInferenceEngine;
-import com.tech.rulesImpl.carLoanRuleEngine.LoanDetailsOutputResult;
-import com.tech.rulesImpl.carLoanRuleEngine.UserInfoInputData;
-import com.tech.rulesImpl.loanRuleEngine.Loan;
+import com.tech.rulesImpl.insuranceRuleEngine.InsuranceInferenceEngine;
+import com.tech.rulesImpl.insuranceRuleEngine.InsuranceDetails;
+import com.tech.rulesImpl.insuranceRuleEngine.PolicyHolderDetails;
+import com.tech.rulesImpl.loanRuleEngine.LoanDetails;
 import com.tech.rulesImpl.loanRuleEngine.LoanInferenceEngine;
+import com.tech.rulesImpl.loanRuleEngine.UserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class RuleEngineRestController {
     @Autowired
     private LoanInferenceEngine loanInferenceEngine;
     @Autowired
-    private CarLoanInferenceEngine carLoanInferenceEngine;
+    private InsuranceInferenceEngine insuranceInferenceEngine;
 
     @GetMapping(value = "/get-all-rules/{ruleNamespace}")
     public ResponseEntity<?> getRulesByNamespace(@PathVariable("ruleNamespace") String ruleNamespace) {
@@ -42,14 +43,14 @@ public class RuleEngineRestController {
     }
 
     @PostMapping(value = "/loan")
-    public ResponseEntity<?> postUserLoanDetails(@RequestBody Loan loan) {
-        Loan result = (Loan) ruleEngine.run(loanInferenceEngine, loan);
+    public ResponseEntity<?> postUserLoanDetails(@RequestBody UserDetails userDetails) {
+        LoanDetails result = (LoanDetails) ruleEngine.run(loanInferenceEngine, userDetails);
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping(value = "/car-loan")
-    public ResponseEntity<?> postCarLoanDetails(@RequestBody UserInfoInputData userInfoInputData) {
-        LoanDetailsOutputResult result = (LoanDetailsOutputResult) ruleEngine.run(carLoanInferenceEngine, userInfoInputData);
+    @PostMapping(value = "/insurance")
+    public ResponseEntity<?> postCarLoanDetails(@RequestBody PolicyHolderDetails policyHolderDetails) {
+        InsuranceDetails result = (InsuranceDetails) ruleEngine.run(insuranceInferenceEngine, policyHolderDetails);
         return ResponseEntity.ok(result);
     }
 }

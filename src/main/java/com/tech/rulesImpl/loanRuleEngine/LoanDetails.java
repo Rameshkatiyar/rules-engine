@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Loan {
-    Integer creditScore;
-    String firstName;
-    Double requestedLoanAmount;
-    Boolean approved;
-    Double approvedAmount;
-    Double salary;
+public class LoanDetails {
+    Long accountNumber;
+    Boolean approvalStatus;
+    Float interestRate;
+    Float sanctionedPercentage;
+    Double processingFees;
 }

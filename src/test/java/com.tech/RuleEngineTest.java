@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.knowledgeBase.KnowledgeBaseService;
 import com.tech.knowledgeBase.models.Rule;
 import com.tech.restAPI.RuleNamespace;
-import com.tech.rulesImpl.carLoanRuleEngine.LoanDetailsOutputResult;
-import com.tech.rulesImpl.carLoanRuleEngine.UserInfoInputData;
+import com.tech.rulesImpl.insuranceRuleEngine.InsuranceDetails;
+import com.tech.rulesImpl.insuranceRuleEngine.PolicyHolderDetails;
+import com.tech.rulesImpl.loanRuleEngine.LoanDetails;
+import com.tech.rulesImpl.loanRuleEngine.UserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -59,82 +61,95 @@ public class RuleEngineTest {
 
     @Test
     public void verifyPostCarLoanRuleOne() throws Exception {
-        UserInfoInputData userInfoInputData = UserInfoInputData.builder()
-                .firstName("Ramesh")
+        UserDetails userDetails = UserDetails.builder()
+                .firstName("Mark")
+                .lastName("K")
                 .accountNumber(1234567L)
-                .requestedLoanAmount(100000.0)
-                .salary(80000.0)
-                .creditScore(900)
+                .requestedLoanAmount(1000000.0)
+                .monthlySalary(50000.0)
+                .cibilScore(600)
+                .age(25)
                 .build();
 
-        MvcResult mvcResult = mockMvc.perform(post("/car-loan")
+        MvcResult mvcResult = mockMvc.perform(post("/loan")
                 .contentType("application/json")
-                .content(objectMapper.writeValueAsString(userInfoInputData)))
+                .content(objectMapper.writeValueAsString(userDetails)))
                 .andExpect(status().isOk()
                 ).andReturn();
 
         String actualResponseBody = mvcResult.getResponse().getContentAsString();
-        log.info("Output Response: {}", actualResponseBody);
 
-        LoanDetailsOutputResult loanDetailsOutputResult = LoanDetailsOutputResult.builder()
+        LoanDetails loanDetails = LoanDetails.builder()
                 .approvalStatus(true)
                 .interestRate(9.0f)
-                .sanctionedAmount(90100.0)
+                .sanctionedPercentage(90f)
+                .accountNumber(1234567L)
+                .processingFees(2000.0)
                 .build();
-        String expectedResponseBody = objectMapper.writeValueAsString(loanDetailsOutputResult);
+        String expectedResponseBody = objectMapper.writeValueAsString(loanDetails);
 
         assertThat(expectedResponseBody).isEqualToIgnoringWhitespace(actualResponseBody);
     }
 
     @Test
     public void verifyPostCarLoanRuleTwo() throws Exception {
-        UserInfoInputData userInfoInputData = UserInfoInputData.builder()
-                .firstName("Ramesh")
+        UserDetails userDetails = UserDetails.builder()
+                .firstName("Jhone")
+                .lastName("L")
                 .accountNumber(1234567L)
-                .requestedLoanAmount(100000.0)
-                .salary(80000.0)
-                .creditScore(400)
+                .requestedLoanAmount(800000.0)
+                .monthlySalary(30000.0)
+                .cibilScore(400)
+                .age(25)
                 .build();
 
-        MvcResult mvcResult = mockMvc.perform(post("/car-loan")
+        MvcResult mvcResult = mockMvc.perform(post("/loan")
                 .contentType("application/json")
-                .content(objectMapper.writeValueAsString(userInfoInputData)))
+                .content(objectMapper.writeValueAsString(userDetails)))
                 .andExpect(status().isOk()
                 ).andReturn();
 
         String actualResponseBody = mvcResult.getResponse().getContentAsString();
-        log.info("Output Response: {}", actualResponseBody);
 
-        LoanDetailsOutputResult loanDetailsOutputResult = LoanDetailsOutputResult.builder()
+        LoanDetails loanDetails = LoanDetails.builder()
                 .approvalStatus(true)
                 .interestRate(9.0f)
-                .sanctionedAmount(90500.0)
+                .sanctionedPercentage(70f)
+                .accountNumber(1234567L)
+                .processingFees(1000.0)
                 .build();
-        String expectedResponseBody = objectMapper.writeValueAsString(loanDetailsOutputResult);
+        String expectedResponseBody = objectMapper.writeValueAsString(loanDetails);
 
         assertThat(expectedResponseBody).isEqualToIgnoringWhitespace(actualResponseBody);
     }
 
     private List<Rule> getListOfRules(){
-        log.info("Returning Mock Data!");
         Rule rule1 = Rule.builder()
-                .ruleNamespace(RuleNamespace.CAR_LOAN)
+                .ruleNamespace(RuleNamespace.LOAN)
                 .ruleId("1")
-                .condition("input.salary >= 70000 && input.creditScore >= 900 && $(loan.interest) >= 8")
-                .action("output.setApprovalStatus(true); output.setSanctionedAmount((input.requestedLoanAmount * 0.9)+100.0);output.setInterestRate($(loan.interest));")
+                .condition("input.monthlySalary >= 50000.0 && input.cibilScore >= 500 && input.requestedLoanAmount<1500000 && $(bank.target_done) == false")
+                .action("output.setApprovalStatus(true); output.setInterestRate($(bank.interest)); output.setSanctionedPercentage(90);output.setProcessingFees(2000);output.setAccountNumber(input.accountNumber);")
                 .priority(1)
-                .description("A person is eligible for car loan?")
+                .description("A person is eligible for loan?")
                 .build();
         Rule rule2 = Rule.builder()
-                .ruleNamespace(RuleNamespace.CAR_LOAN)
+                .ruleNamespace(RuleNamespace.LOAN)
                 .ruleId("2")
-                .condition("input.salary >= 20000 && input.creditScore <= 500 && $(loan.interest) >= 8")
-                .action("output.setApprovalStatus(true); output.setSanctionedAmount((input.requestedLoanAmount * 0.9)+500.0);output.setInterestRate($(loan.interest));")
-                .priority(1)
+                .condition("(input.monthlySalary < 50000.0 && input.cibilScore <= 300 && input.requestedLoanAmount >= 1000000) || $(bank.target_done) == true")
+                .action("output.setApprovalStatus(false); output.setInterestRate(0.0); output.setSanctionedPercentage(0.0);output.setProcessingFees(0);output.setAccountNumber(input.accountNumber);")
+                .priority(2)
+                .description("A person is eligible for car loan?")
+                .build();
+        Rule rule3 = Rule.builder()
+                .ruleNamespace(RuleNamespace.LOAN)
+                .ruleId("3")
+                .condition("input.monthlySalary >= 20000.0 && input.cibilScore >= 300 && input.cibilScore < 500 && input.requestedLoanAmount <= 1000000 && $(bank.target_done) == false")
+                .action("output.setApprovalStatus(true); output.setInterestRate($(bank.interest)); output.setSanctionedPercentage(70);output.setProcessingFees(1000);output.setAccountNumber(input.accountNumber);")
+                .priority(2)
                 .description("A person is eligible for car loan?")
                 .build();
 
-        List<Rule> allRulesByNamespace = Lists.newArrayList(rule1, rule2);
+        List<Rule> allRulesByNamespace = Lists.newArrayList(rule1, rule2, rule3);
         return allRulesByNamespace;
     }
 }
