@@ -23,7 +23,7 @@
         <guava.version>21.0</guava.version>
         <junit.version>4.12</junit.version>
         <typesafe.version>1.2.1</typesafe.version>
-        <postgresql.version>9.4-1206-jdbc42</postgresql.version>
+        <postgresql.version>42.3.7</postgresql.version>
         <mvel.version>2.4.4.Final</mvel.version>
     </properties>
 
